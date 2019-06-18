@@ -1,0 +1,16 @@
+id_name: intercom
+name: Intercom
+category: Add data
+icon: database
+description: Load your user list from Intercom.
+loads_data: true
+help_url: modules/add-data/intercom
+parameters:
+- id_name: access_token
+  type: secret
+  secret_logic:
+    provider: oauth
+    service: intercom
+- id_name: version_select
+  name: Load
+  type: custom
