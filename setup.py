@@ -11,5 +11,5 @@ setup(
     url="https://github.com/CJWorkbench/intercom",
     packages=[""],
     py_modules=["libraryofcongress"],
-    install_requires=["pandas==0.25.0", "aiohttp==3.5.4"],
+    install_requires=["pandas==0.25.0", "aiohttp==3.5.4", "cjwmodule==*"],
 )
