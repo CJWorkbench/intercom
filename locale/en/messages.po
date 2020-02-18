@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-02-07 16:53+0000\n"
+"POT-Creation-Date: 2020-02-18 17:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -33,10 +33,10 @@ msgid "badParam.access_token.empty"
 msgstr "Please sign in to Intercom"
 
 #: intercom.py:216
-msgid "error.queryIntercom.general"
+msgid "error.httpError.general"
 msgstr "Error querying Intercom: {error}"
 
 #: intercom.py:222
-msgid "error.handleIntercomResponse.general"
+msgid "error.unexpectedIntercomJson.general"
 msgstr "Error handling Intercom response: {error}"
 

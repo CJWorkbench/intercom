@@ -211,13 +211,13 @@ async def fetch(params, *, secrets):
             tags = await fetch_tags(session, bearer_token)
     except ClientResponseError as err:
         return i18n.trans(
-            "error.queryIntercom.general", 
+            "error.httpError.general", 
             "Error querying Intercom: {error}",
             {"error": str(err)}
         )
     except RuntimeError as err:
         return i18n.trans(
-            "error.handleIntercomResponse.general", 
+            "error.unexpectedIntercomJson.general", 
             "Error handling Intercom response: {error}",
             {"error": str(err)}
         )

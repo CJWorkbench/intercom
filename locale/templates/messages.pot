@@ -17,11 +17,11 @@ msgstr ""
 
 #. default-message: Error querying Intercom: {error}
 #: intercom.py:216
-msgid "error.queryIntercom.general"
+msgid "error.httpError.general"
 msgstr ""
 
 #. default-message: Error handling Intercom response: {error}
 #: intercom.py:222
-msgid "error.handleIntercomResponse.general"
+msgid "error.unexpectedIntercomJson.general"
 msgstr ""
 
