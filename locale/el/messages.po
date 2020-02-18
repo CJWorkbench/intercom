@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-02-07 16:53+0000\n"
+"POT-Creation-Date: 2020-02-18 15:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: el\n"
@@ -20,13 +20,15 @@ msgstr ""
 "Generated-By: Babel 2.8.0\n"
 
 msgid "_spec.name"
-msgstr ""
+msgstr "Intercom"
 
 msgid "_spec.description"
 msgstr ""
+"Φόρτωση της λίστας χρηστών και συνδεόμενων μεταδεδομένων από το "
+"λογαριασμό σας στην Intercom."
 
 msgid "_spec.parameters.version_select.name"
-msgstr ""
+msgstr "Φόρτωση"
 
 #: intercom.py:199
 msgid "badParam.access_token.empty"
