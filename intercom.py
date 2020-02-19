@@ -4,6 +4,7 @@ import aiohttp
 from aiohttp.client_exceptions import ClientResponseError
 import numpy as np
 import pandas as pd
+from cjwmodule import i18n
 
 
 MaxNPages = 50
@@ -195,7 +196,10 @@ def build_dataframe(
 async def fetch(params, *, secrets):
     access_token = (secrets.get("access_token") or {}).get("secret")
     if not access_token:
-        return "Please sign in to Intercom"
+        return i18n.trans(
+            "badParam.access_token.empty", 
+            "Please sign in to Intercom"
+        )
     bearer_token = access_token["access_token"]
 
     try:
@@ -206,8 +210,16 @@ async def fetch(params, *, secrets):
             segments = await fetch_segments(session, bearer_token)
             tags = await fetch_tags(session, bearer_token)
     except ClientResponseError as err:
-        return "Error querying Intercom: %s" % str(err)
+        return i18n.trans(
+            "error.httpError.general", 
+            "Error querying Intercom: {error}",
+            {"error": str(err)}
+        )
     except RuntimeError as err:
-        return "Error handling Intercom response: %s" % str(err)
+        return i18n.trans(
+            "error.unexpectedIntercomJson.general", 
+            "Error handling Intercom response: {error}",
+            {"error": str(err)}
+        )
 
     return build_dataframe(users, companies, segments, tags)

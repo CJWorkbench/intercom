@@ -1,0 +1,27 @@
+#. default-message: Intercom
+msgid "_spec.name"
+msgstr ""
+
+#. default-message: Load user list and associated metadata from your Intercom account.
+msgid "_spec.description"
+msgstr ""
+
+#. default-message: Load
+msgid "_spec.parameters.version_select.name"
+msgstr ""
+
+#. default-message: Please sign in to Intercom
+#: intercom.py:199
+msgid "badParam.access_token.empty"
+msgstr ""
+
+#. default-message: Error querying Intercom: {error}
+#: intercom.py:216
+msgid "error.httpError.general"
+msgstr ""
+
+#. default-message: Error handling Intercom response: {error}
+#: intercom.py:222
+msgid "error.unexpectedIntercomJson.general"
+msgstr ""
+
