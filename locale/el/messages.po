@@ -32,13 +32,13 @@ msgstr "Φόρτωση"
 
 #: intercom.py:199
 msgid "badParam.access_token.empty"
-msgstr ""
+msgstr "Συνδεθείτε στην Intercom"
 
 #: intercom.py:216
 msgid "error.httpError.general"
-msgstr ""
+msgstr "Παρουσιάστηκε σφάλμα κατά την ερώτηση στην Intercom: {error}"
 
 #: intercom.py:222
 msgid "error.unexpectedIntercomJson.general"
-msgstr ""
+msgstr "Σφάλμα χειρισμού της απάντησης της Intercom: {error}"
 
