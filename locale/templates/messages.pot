@@ -16,12 +16,12 @@ msgid "badParam.access_token.empty"
 msgstr ""
 
 #. default-message: Error querying Intercom: {error}
-#: intercom.py:216
+#: intercom.py:213
 msgid "error.httpError.general"
 msgstr ""
 
 #. default-message: Error handling Intercom response: {error}
-#: intercom.py:222
+#: intercom.py:219
 msgid "error.unexpectedIntercomJson.general"
 msgstr ""
 

@@ -1,7 +1,7 @@
 from collections import namedtuple
 from typing import Any, Dict, List, Optional, Tuple
-import aiohttp
-from aiohttp.client_exceptions import ClientResponseError
+
+import httpx
 import numpy as np
 import pandas as pd
 from cjwmodule import i18n
@@ -86,7 +86,7 @@ def extract_social_media_username(objs: pd.Series, service: str) -> pd.Series:
 
 
 async def fetch_paginated(
-    session, bearer_token: str, url: str, data_key: str
+    client, bearer_token: str, url: str, data_key: str
 ) -> List[Dict[str, Any]]:
     """
     Fetch `url` using `access_token`, following pages.
@@ -99,7 +99,7 @@ async def fetch_paginated(
 
     page_url = url  # we'll modify it as we go
     for _ in range(MaxNPages):
-        response = await session.get(
+        response = await client.get(
             page_url,
             headers={
                 "Authorization": f"Bearer {bearer_token}",
@@ -107,7 +107,7 @@ async def fetch_paginated(
             },
         )
         response.raise_for_status()
-        data = await response.json()
+        data = response.json()
         if not isinstance(data, dict):
             raise RuntimeError("Intercom did not return a JSON Object")
         if data_key not in data:
@@ -123,9 +123,9 @@ async def fetch_paginated(
     return results
 
 
-async def fetch_companies(session, bearer_token: str) -> Dict[str, str]:
+async def fetch_companies(client, bearer_token: str) -> Dict[str, str]:
     """Fetch mapping from company ID to company name."""
-    companies = await fetch_paginated(session, bearer_token, COMPANIES_URL, "companies")
+    companies = await fetch_paginated(client, bearer_token, COMPANIES_URL, "companies")
     return {
         company["id"]: company["name"]
         for company in companies
@@ -133,20 +133,20 @@ async def fetch_companies(session, bearer_token: str) -> Dict[str, str]:
     }
 
 
-async def fetch_segments(session, bearer_token: str) -> Dict[str, str]:
+async def fetch_segments(client, bearer_token: str) -> Dict[str, str]:
     """Fetch mapping from segment ID to segment name."""
-    segments = await fetch_paginated(session, bearer_token, SEGMENTS_URL, "segments")
+    segments = await fetch_paginated(client, bearer_token, SEGMENTS_URL, "segments")
     return {segment["id"]: segment["name"] for segment in segments}
 
 
-async def fetch_tags(session, bearer_token: str) -> Dict[str, str]:
+async def fetch_tags(client, bearer_token: str) -> Dict[str, str]:
     """Fetch mapping from tag ID to tag name."""
-    tags = await fetch_paginated(session, bearer_token, TAGS_URL, "tags")
+    tags = await fetch_paginated(client, bearer_token, TAGS_URL, "tags")
     return {tag["id"]: tag["name"] for tag in tags}
 
 
-async def fetch_users(session, bearer_token: str) -> List[Dict[str, Any]]:
-    return await fetch_paginated(session, bearer_token, USERS_URL, "users")
+async def fetch_users(client, bearer_token: str) -> List[Dict[str, Any]]:
+    return await fetch_paginated(client, bearer_token, USERS_URL, "users")
 
 
 def build_dataframe(
@@ -196,30 +196,27 @@ def build_dataframe(
 async def fetch(params, *, secrets):
     access_token = (secrets.get("access_token") or {}).get("secret")
     if not access_token:
-        return i18n.trans(
-            "badParam.access_token.empty", 
-            "Please sign in to Intercom"
-        )
+        return i18n.trans("badParam.access_token.empty", "Please sign in to Intercom")
     bearer_token = access_token["access_token"]
 
     try:
-        # aiohttp timeout of 5min
-        async with aiohttp.ClientSession() as session:
-            users = await fetch_users(session, bearer_token)
-            companies = await fetch_companies(session, bearer_token)
-            segments = await fetch_segments(session, bearer_token)
-            tags = await fetch_tags(session, bearer_token)
-    except ClientResponseError as err:
+        # 5min timeouts ... and we'll assume Intercom is quick enough
+        async with httpx.AsyncClient(timeout=httpx.Timeout(300)) as client:
+            users = await fetch_users(client, bearer_token)
+            companies = await fetch_companies(client, bearer_token)
+            segments = await fetch_segments(client, bearer_token)
+            tags = await fetch_tags(client, bearer_token)
+    except httpx.RequestError as err:
         return i18n.trans(
-            "error.httpError.general", 
+            "error.httpError.general",
             "Error querying Intercom: {error}",
-            {"error": str(err)}
+            {"error": str(err)},
         )
     except RuntimeError as err:
         return i18n.trans(
-            "error.unexpectedIntercomJson.general", 
+            "error.unexpectedIntercomJson.general",
             "Error handling Intercom response: {error}",
-            {"error": str(err)}
+            {"error": str(err)},
         )
 
     return build_dataframe(users, companies, segments, tags)
